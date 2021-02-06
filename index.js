@@ -21,7 +21,6 @@ app.get('/:name/:text', async (req, res) => {
     let embed = new Discord.MessageEmbed()
         .setTitle(`GMOd Message`)
         .setColor(`#dcdcdc`)
-        .setDescription(`All Users Viewer | ${increment}`)
         .addFields(
             { name: 'Username', value: name },
             { name: 'Text', value: text },
