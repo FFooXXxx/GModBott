@@ -34,6 +34,6 @@ app.get('/:name/:text', async (req, res) => {
     console.log(name, text);
 });
 
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
     bot.login(token);
 })
