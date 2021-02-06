@@ -17,7 +17,10 @@ bot.on('ready', () => {
 app.get('/:name/:text', async (req, res) => {
     let name = req.params.name;
     let RawText = req.params.text;
-    let text = RawText.replace('_', ' ');
+    let textt = RawText.replace('_', ' ');
+    
+    let buff = new Buffer(textt, 'utf8');
+    let text = buff.toString('ascii');
     
     let embed = new Discord.MessageEmbed()
         .setTitle(`GMOd Message`)
