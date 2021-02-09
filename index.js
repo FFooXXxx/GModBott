@@ -46,14 +46,13 @@ app.post('/', urlencodedParser, async (req, res) => {
         avatarurl = JSON.parse(String(body)).response.players[0].avatar;
 
         let embed = new Discord.MessageEmbed()
-            .setTitle(`${name} (${steamid})`)
             .setColor(`#dcdcdc`)
             .addFields(
                 { name: 'Тип сообщения', value: type },
                 { name: 'Содержание', value: '```' + text.trim() + '```' },
                 { name: 'URL', value: avatarurl },
             )
-            .setAuthor('', avatarurl)
+            .setAuthor(`${name} (${steamid})`, avatarurl)
 
         await bot.channels.fetch('781598931409829899').then(channel => {
             channel.send(embed);
