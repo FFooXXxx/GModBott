@@ -52,6 +52,7 @@ app.post('/', urlencodedParser, async (req, res) => {
         .addFields(
             { name: 'Тип сообщения', value: type },
             { name: 'Содержание', value: '```' + text.trim() + '```' },
+            { name: 'URL', value: avatarurl },
         )
         .setAuthor(avatarurl)
 
