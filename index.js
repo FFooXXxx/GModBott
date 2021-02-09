@@ -40,7 +40,7 @@ app.post('/', urlencodedParser, async (req, res) => {
     }
 
     let embed = new Discord.MessageEmbed()
-        .setTitle(`${name} | ${steamid}`)
+        .setTitle(`${name} (${steamid})`)
         .setColor(`#dcdcdc`)
         .addFields(
             { name: 'Тип сообщения', value: type },
