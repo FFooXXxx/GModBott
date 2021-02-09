@@ -24,16 +24,16 @@ app.post('/', urlencodedParser, async (req, res) => {
 
     let content = text.split(' ');
     if (content[0] == '//' || content == '/ooc') {
-        text = text.replace(content[0], '');
+        text = text.replace(content[0], '').trim();
         type = 'ooc';
     } else if (content[0] == '/l' || content == '/looc') {
-        text = text.replace(content[0], '');
+        text = text.replace(content[0], '').trim();
         type = 'looc';
     } else if (content[0] == '/pm') {
-        text = text.replace(content[0], '');
+        text = text.replace(content[0], '').trim();
         type = 'pm';
     } else if (content[0].startsWith('/')) {
-        text = text.replace(content[0], '');
+        text = text.replace(content[0], '').trim();
         type = content[0].replace('/', '');
     } else {
         type = 'message'
@@ -44,7 +44,7 @@ app.post('/', urlencodedParser, async (req, res) => {
         .setColor(`#dcdcdc`)
         .addFields(
             { name: 'Тип сообщения', value: type },
-            { name: 'Содержание', value: '```' + text + '```' },
+            { name: 'Содержание', value: '```' + text.trim() + '```' },
         )
 
     await bot.channels.fetch('781598931409829899').then(channel => {
