@@ -2,8 +2,11 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 const express = require('express');
 const app = express();
-let token = 'NzMxOTAyNjEzODA4NzQyNDEy.Xwszzw.-AuqjM3BzDq57a_w49i_iSisYes';
+const bodyParser = require("body-parser");
+const request = require('request');
+const urlencodedParser = bodyParser.urlencoded({extended: true});
 let prefix = '*';
+const steamapi = process.env.STEAMAPITOKEN;
 
 bot.on('ready', () => {
     console.log(`Let's make some kung-fu with ${bot.user.username}`);
@@ -14,26 +17,52 @@ bot.on('ready', () => {
     bot.user.setActivity("WILYFOX");
 });
 
-app.get('/:name/:text', async (req, res) => {
-    let name = req.params.name;
-    let text = req.params.text;
+app.post('/', urlencodedParser, async (req, res) => {
+    let name = req.body.name;
+    let text = req.body.text;
+    let steamid = req.body.steamid;
+    let steam64 = req.body.ssf;
+    let avatarurl = '';
+    request(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamapi}&steamids=${steam64}`, (err, res, body) => {
+        avatarurl = JSON.parse(String(body)).response.players[0].avatar;
+    })
+    
+    let type = '';
+
+    let content = text.split(' ');
+    if (content[0] == '//' || content == '/ooc') {
+        text = text.replace(content[0], '').trim();
+        type = 'ooc';
+    } else if (content[0] == '/l' || content == '/looc') {
+        text = text.replace(content[0], '').trim();
+        type = 'looc';
+    } else if (content[0] == '/pm') {
+        text = text.replace(content[0], '').trim();
+        type = 'pm';
+    } else if (content[0].startsWith('/')) {
+        text = text.replace(content[0], '').trim();
+        type = content[0].replace('/', '');
+    } else {
+        type = 'message'
+    }
 
     let embed = new Discord.MessageEmbed()
-        .setTitle(`GMOd Message`)
+        .setTitle(`${name} (${steamid})`)
         .setColor(`#dcdcdc`)
-        .setDescription(`All Users Viewer | ${increment}`)
         .addFields(
-            { name: 'Username', value: name },
-            { name: 'Text', value: text },
+            { name: 'Тип сообщения', value: type },
+            { name: 'Содержание', value: '```' + text.trim() + '```' },
         )
+        .setAuthor(avatarurl)
 
     await bot.channels.fetch('781598931409829899').then(channel => {
         channel.send(embed);
     });
     
     console.log(name, text);
+    res.end();
 });
 
 app.listen(process.env.PORT, () => {
-    bot.login(token);
+    bot.login(process.env.TOKEN);
 })
