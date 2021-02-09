@@ -19,16 +19,28 @@ bot.on('ready', () => {
 app.post('/', urlencodedParser, async (req, res) => {
     let name = req.body.name;
     let text = req.body.text;
-    let info = req.body.inf;
-    console.log();
+    let steamid = req.body.steamid;
+    let type = '';
+
+    let content = text.split(' ');
+    if (content[0] == '//' || content == '/ooc') {
+        type = 'ooc';
+    } else if (content[0] == '/l' || content == '/looc') {
+        type = 'looc';
+    } else if (content[0] == '/pm') {
+        type = 'pm';
+    } else if (content[0].startsWith('/')) {
+        type = content[0];
+    } else {
+        type = 'message'
+    }
 
     let embed = new Discord.MessageEmbed()
-        .setTitle(`GM0d Message 0.1`)
+        .setTitle(`${name} | ${steamid}`)
         .setColor(`#dcdcdc`)
         .addFields(
-            { name: 'Username', value: name },
-            { name: 'Text', value: '```' + text + '```' },
-            { name: 'Debug', value: '```' + info + '```' }
+            { name: 'Тип сообщения', value: type },
+            { name: 'Содержание', value: '```' + text + '```' },
         )
 
     await bot.channels.fetch('781598931409829899').then(channel => {
