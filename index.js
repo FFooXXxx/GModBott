@@ -3,9 +3,10 @@ const bot = new Discord.Client();
 const express = require('express');
 const app = express();
 const bodyParser = require("body-parser");
+const request = require('request');
 const urlencodedParser = bodyParser.urlencoded({extended: true});
-let token = 'NzMxOTAyNjEzODA4NzQyNDEy.Xwszzw.-AuqjM3BzDq57a_w49i_iSisYes';
 let prefix = '*';
+const steamapi = process.env.STEAMAPITOKEN;
 
 bot.on('ready', () => {
     console.log(`Let's make some kung-fu with ${bot.user.username}`);
@@ -20,6 +21,12 @@ app.post('/', urlencodedParser, async (req, res) => {
     let name = req.body.name;
     let text = req.body.text;
     let steamid = req.body.steamid;
+    let steam64 = req.body.ssf;
+    let avatarurl = '';
+    request(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamapi}&steamids=${steam64}`, (err, res, body) => {
+        avatarurl = JSON.parse(String(body)).response.players[0].avatar;
+    })
+    
     let type = '';
 
     let content = text.split(' ');
@@ -46,6 +53,7 @@ app.post('/', urlencodedParser, async (req, res) => {
             { name: 'Тип сообщения', value: type },
             { name: 'Содержание', value: '```' + text.trim() + '```' },
         )
+        .setAuthor(avatarurl)
 
     await bot.channels.fetch('781598931409829899').then(channel => {
         channel.send(embed);
@@ -56,5 +64,5 @@ app.post('/', urlencodedParser, async (req, res) => {
 });
 
 app.listen(process.env.PORT, () => {
-    bot.login(token);
+    bot.login(process.env.TOKEN);
 })
