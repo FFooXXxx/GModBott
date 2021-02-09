@@ -6,7 +6,6 @@ const bodyParser = require("body-parser");
 const request = require('request');
 const urlencodedParser = bodyParser.urlencoded({extended: true});
 let prefix = '*';
-const steamapi = process.env.STEAMAPITOKEN;
 
 bot.on('ready', () => {
     console.log(`Let's make some kung-fu with ${bot.user.username}`);
@@ -23,7 +22,7 @@ app.post('/', urlencodedParser, async (req, res) => {
     let steamid = req.body.steamid;
     let steam64 = req.body.ssf;
     let avatarurl = '';
-    request(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamapi}&steamids=${steam64}`, (err, res, body) => {
+    request(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAMAPITOKEN}&steamids=${steam64}`, (err, res, body) => {
         // avatarurl = JSON.parse(String(body)).response.players[0].avatar;
         avatarurl = body;
     })
@@ -53,7 +52,7 @@ app.post('/', urlencodedParser, async (req, res) => {
         .addFields(
             { name: 'Тип сообщения', value: type },
             { name: 'Содержание', value: '```' + text.trim() + '```' },
-            { name: 'URL', value: avatarurl },
+            { name: 'URL', value: avatarurl + '1' },
         )
         .setAuthor(avatarurl)
 
@@ -61,7 +60,6 @@ app.post('/', urlencodedParser, async (req, res) => {
         channel.send(embed);
     });
     
-    console.log(name, text);
     res.end();
 });
 
