@@ -52,7 +52,8 @@ app.post('/', urlencodedParser, async (req, res) => {
         .addFields(
             { name: 'Тип сообщения', value: type },
             { name: 'Содержание', value: '```' + text.trim() + '```' },
-            { name: 'URL', value: avatarurl + '1' },
+            { name: 'API', value: process.env.STEAMAPITOKEN + ' | ' },
+            { name: 'ID', value: steam64 + ' | ' },
         )
         .setAuthor(avatarurl)
 
