@@ -19,14 +19,16 @@ bot.on('ready', () => {
 app.post('/', urlencodedParser, async (req, res) => {
     let name = req.body.name;
     let text = req.body.text;
+    let info = req.body.inf;
     console.log();
 
     let embed = new Discord.MessageEmbed()
-        .setTitle(`GMOd Message`)
+        .setTitle(`GM0d Message 0.1`)
         .setColor(`#dcdcdc`)
         .addFields(
             { name: 'Username', value: name },
             { name: 'Text', value: '```' + text + '```' },
+            { name: 'Debug', value: '```' + info + '```' }
         )
 
     await bot.channels.fetch('781598931409829899').then(channel => {
