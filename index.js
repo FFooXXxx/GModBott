@@ -24,13 +24,17 @@ app.post('/', urlencodedParser, async (req, res) => {
 
     let content = text.split(' ');
     if (content[0] == '//' || content == '/ooc') {
+        text = text.replace(content[0], '');
         type = 'ooc';
     } else if (content[0] == '/l' || content == '/looc') {
+        text = text.replace(content[0], '');
         type = 'looc';
     } else if (content[0] == '/pm') {
+        text = text.replace(content[0], '');
         type = 'pm';
     } else if (content[0].startsWith('/')) {
-        type = content[0];
+        text = text.replace(content[0], '');
+        type = content[0].replace('/', '');
     } else {
         type = 'message'
     }
