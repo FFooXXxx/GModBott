@@ -24,7 +24,8 @@ app.post('/', urlencodedParser, async (req, res) => {
     let steam64 = req.body.ssf;
     let avatarurl = '';
     request(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamapi}&steamids=${steam64}`, (err, res, body) => {
-        avatarurl = JSON.parse(String(body)).response.players[0].avatar;
+        // avatarurl = JSON.parse(String(body)).response.players[0].avatar;
+        avatarurl = body;
     })
     
     let type = '';
