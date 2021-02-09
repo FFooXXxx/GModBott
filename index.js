@@ -2,6 +2,8 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 const express = require('express');
 const app = express();
+const bodyParser = require("body-parser");
+const urlencodedParser = bodyParser.urlencoded({extended: true});
 let token = 'NzMxOTAyNjEzODA4NzQyNDEy.Xwszzw.-AuqjM3BzDq57a_w49i_iSisYes';
 let prefix = '*';
 
@@ -14,17 +16,17 @@ bot.on('ready', () => {
     bot.user.setActivity("WILYFOX");
 });
 
-app.get('/:name/:text', async (req, res) => {
-    let name = req.params.name;
-    let RawText = req.params.text;
-    let text = RawText.replace('_', ' ').toString('l1');
-    
+app.post('/', urlencodedParser, async (req, res) => {
+    let name = req.body.name;
+    let text = req.body.text;
+    console.log();
+
     let embed = new Discord.MessageEmbed()
         .setTitle(`GMOd Message`)
         .setColor(`#dcdcdc`)
         .addFields(
             { name: 'Username', value: name },
-            { name: 'Text', value: text },
+            { name: 'Text', value: '```' + text + '```' },
         )
 
     await bot.channels.fetch('781598931409829899').then(channel => {
@@ -32,8 +34,9 @@ app.get('/:name/:text', async (req, res) => {
     });
     
     console.log(name, text);
+    res.end();
 });
 
-app.listen(process.env.PORT, () => {
+app.listen(3000, () => {
     bot.login(token);
 })
