@@ -42,9 +42,9 @@ app.post('/', urlencodedParser, async (req, res) => {
         type = 'message'
     }
 
-    request(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAMAPITOKEN}&steamids=${steam64}`, (err, res, body) => {
-        avatarurl = String(JSON.parse(String(body)).response.players[0].avatar);
-    }).then(async ()=> {
+    request(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamapi}&steamids=${steam64}`, (err, res, body) => {
+        avatarurl = JSON.parse(String(body)).response.players[0].avatar;
+
         let embed = new Discord.MessageEmbed()
             .setTitle(`${name} (${steamid})`)
             .setColor(`#dcdcdc`)
@@ -57,9 +57,9 @@ app.post('/', urlencodedParser, async (req, res) => {
         await bot.channels.fetch('781598931409829899').then(channel => {
             channel.send(embed);
         });
-
-        res.end();
     });
+    
+    res.end();  
 });
 
 app.listen(process.env.PORT, () => {
