@@ -37,6 +37,6 @@ app.post('/', urlencodedParser, async (req, res) => {
     res.end();
 });
 
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
     bot.login(token);
 })
