@@ -20,6 +20,7 @@ app.post('/', urlencodedParser, async (req, res) => {
     let name = req.body.name;
     let text = req.body.text;
     let steamid = req.body.steamid;
+    let avatar = req.body.image;
     let type = '';
 
     let content = text.split(' ');
@@ -45,6 +46,7 @@ app.post('/', urlencodedParser, async (req, res) => {
         .addFields(
             { name: 'Тип сообщения', value: type },
             { name: 'Содержание', value: '```' + text.trim() + '```' },
+            { name: 'test', value: avatar },
         )
 
     await bot.channels.fetch('781598931409829899').then(channel => {
