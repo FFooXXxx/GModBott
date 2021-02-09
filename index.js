@@ -53,7 +53,7 @@ app.post('/', urlencodedParser, async (req, res) => {
                 { name: 'Содержание', value: '```' + text.trim() + '```' },
                 { name: 'URL', value: avatarurl },
             )
-            .setAuthor(String(avatarurl))
+            .setImage(String(avatarurl))
 
         await bot.channels.fetch('781598931409829899').then(channel => {
             channel.send(embed);
