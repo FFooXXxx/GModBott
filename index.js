@@ -42,7 +42,7 @@ app.post('/', urlencodedParser, async (req, res) => {
         type = 'message'
     }
 
-    request(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamapi}&steamids=${steam64}`, async (err, res, body) => {
+    request(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAMAPITOKEN}&steamids=${steam64}`, async (err, res, body) => {
         avatarurl = JSON.parse(String(body)).response.players[0].avatar;
 
         let embed = new Discord.MessageEmbed()
